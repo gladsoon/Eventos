@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Eventos.API.Data;
 using Eventos.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -12,12 +13,13 @@ namespace Eventos.API.Controllers
     [Route("[controller]")]
     public class EventoController : ControllerBase
     {
-        public EventoController(){
-
+        private readonly DataContext _context;
+        public EventoController(DataContext context){
+            _context = context;
         }
         [HttpGet]
         public IEnumerable<Evento> Get(){
-            return _evento;
+            return _context.Eventos;
         }
         
         public IEnumerable<Evento>  _evento = new Evento[]{
@@ -37,6 +39,8 @@ namespace Eventos.API.Controllers
                 DataEvento = DateTime.Now.AddDays(12).ToString(),
                 ImageURL = "foto.png"
             }
-        } ;                
+        } ;
+
+        public DataContext Context { get; }
     }
 }
